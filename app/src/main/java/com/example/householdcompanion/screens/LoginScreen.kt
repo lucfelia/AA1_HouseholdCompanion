@@ -6,9 +6,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.householdcompanion.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,8 +38,15 @@ fun LoginScreen(
             )
 
             Spacer(Modifier.height(12.dp))
-            Text("Household companion", style = MaterialTheme.typography.titleLarge, textAlign = TextAlign.Center)
-            Text("Gestor de casas para campañas de rol", textAlign = TextAlign.Center)
+            Text(
+                stringResource(R.string.login_title),
+                style = MaterialTheme.typography.titleLarge,
+                textAlign = TextAlign.Center
+            )
+            Text(
+                stringResource(R.string.login_subtitle),
+                textAlign = TextAlign.Center
+            )
 
             Spacer(Modifier.height(20.dp))
 
@@ -48,11 +57,14 @@ fun LoginScreen(
                     .padding(16.dp)
             ) {
                 Column {
-                    Text("Sea usted bienvenido,")
-                    Text("ingrese sus datos para acceder al compendio de casas nobles.", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(stringResource(R.string.login_welcome_1))
+                    Text(
+                        stringResource(R.string.login_welcome_2),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
 
                     Spacer(Modifier.height(12.dp))
-                    Text("Usuario")
+                    Text(stringResource(R.string.login_user_label))
                     TextField(
                         value = user,
                         onValueChange = { user = it },
@@ -61,7 +73,7 @@ fun LoginScreen(
                     )
 
                     Spacer(Modifier.height(12.dp))
-                    Text("Contraseña")
+                    Text(stringResource(R.string.login_pass_label))
                     TextField(
                         value = pass,
                         onValueChange = { pass = it },
@@ -72,7 +84,10 @@ fun LoginScreen(
 
                     if (error != null) {
                         Spacer(Modifier.height(8.dp))
-                        Text(error!!, color = MaterialTheme.colorScheme.error)
+                        Text(
+                            error!!,
+                            color = MaterialTheme.colorScheme.error
+                        )
                     }
 
                     Spacer(Modifier.height(12.dp))
@@ -84,7 +99,9 @@ fun LoginScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(44.dp)
-                    ) { Text("Entrar al compendio") }
+                    ) {
+                        Text(stringResource(R.string.login_button_enter))
+                    }
                 }
             }
         }

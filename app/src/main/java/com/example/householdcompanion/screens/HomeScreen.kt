@@ -10,6 +10,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import com.example.householdcompanion.R
 import com.example.householdcompanion.data.Stats
 
 @Composable
@@ -37,7 +39,7 @@ fun HomeScreen(
                 )
                 Spacer(Modifier.weight(1f))
                 Text(
-                    text = "Household companion",
+                    text = stringResource(R.string.home_title),
                     style = MaterialTheme.typography.titleLarge,
                     textAlign = TextAlign.Center
                 )
@@ -49,14 +51,19 @@ fun HomeScreen(
                 )
             }
             Spacer(Modifier.height(8.dp))
+
             Text(
-                text = "Bienvenido, $username",
+                text = stringResource(R.string.home_welcome, username),
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
 
             Spacer(Modifier.height(16.dp))
-            Text(text = "Acciones", textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
+            Text(
+                text = stringResource(R.string.home_actions_title),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
             Spacer(Modifier.height(8.dp))
         }
 
@@ -65,6 +72,7 @@ fun HomeScreen(
             "Consulta tus casas" to {},
             "Casas compartidas" to {}
         )
+
         items(acciones) { (titulo, onClick) ->
             Box(
                 modifier = Modifier
@@ -72,8 +80,15 @@ fun HomeScreen(
                     .background(MaterialTheme.colorScheme.surfaceVariant)
                     .padding(12.dp)
             ) {
-                Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(text = titulo, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
+                Column(
+                    Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = titulo,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
                     Spacer(Modifier.height(8.dp))
                     Button(
                         onClick = onClick,
@@ -88,7 +103,11 @@ fun HomeScreen(
 
         item {
             Spacer(Modifier.height(8.dp))
-            Text(text = "Stats actuales", textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
+            Text(
+                text = stringResource(R.string.home_stats_title),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
             Spacer(Modifier.height(8.dp))
 
             Box(
@@ -97,10 +116,25 @@ fun HomeScreen(
                     .background(MaterialTheme.colorScheme.surfaceVariant)
                     .padding(16.dp)
             ) {
-                Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text("• Casas actuales: ${stats.actuales}", textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
-                    Text("• Casas destruidas: ${stats.destruidas}", textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
-                    Text("• Casas de amigos: ${stats.deAmigos}", textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
+                Column(
+                    Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        stringResource(R.string.home_stats_current, stats.actuales),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Text(
+                        stringResource(R.string.home_stats_destroyed, stats.destruidas),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Text(
+                        stringResource(R.string.home_stats_friends, stats.deAmigos),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
                 }
             }
 
@@ -110,7 +144,7 @@ fun HomeScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(44.dp)
-            ) { Text("Volver a la Log In") }
+            ) { Text(stringResource(R.string.home_action_logout)) }
         }
     }
 }

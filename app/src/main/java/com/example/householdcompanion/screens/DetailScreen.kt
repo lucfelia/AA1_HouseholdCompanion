@@ -9,7 +9,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.householdcompanion.R
 import com.example.householdcompanion.data.House
 import com.example.householdcompanion.data.FakeRepo
 
@@ -29,7 +31,10 @@ fun DetailScreen(
             .padding(16.dp)
     ) {
         item {
-            Text(text = "Crea una casa", style = MaterialTheme.typography.titleLarge)
+            Text(
+                text = stringResource(R.string.detail_title),
+                style = MaterialTheme.typography.titleLarge
+            )
             Spacer(Modifier.height(12.dp))
 
             Box(
@@ -39,10 +44,10 @@ fun DetailScreen(
                     .padding(16.dp)
             ) {
                 Column {
-                    Text("1) Identidad de la casa")
+                    Text(stringResource(R.string.detail_identity_section))
                     Spacer(Modifier.height(8.dp))
 
-                    Text("Nombre")
+                    Text(stringResource(R.string.detail_name_label))
                     TextField(
                         value = nombre,
                         onValueChange = { nombre = it },
@@ -51,7 +56,7 @@ fun DetailScreen(
                     )
 
                     Spacer(Modifier.height(12.dp))
-                    Text("Lema")
+                    Text(stringResource(R.string.detail_motto_label))
                     TextField(
                         value = lema,
                         onValueChange = { lema = it },
@@ -60,7 +65,7 @@ fun DetailScreen(
                     )
 
                     Spacer(Modifier.height(12.dp))
-                    Text("Emblema")
+                    Text(stringResource(R.string.detail_emblem_label))
                     TextField(
                         value = emblema,
                         onValueChange = { emblema = it },
@@ -71,12 +76,15 @@ fun DetailScreen(
             }
 
             Spacer(Modifier.height(16.dp))
-            Text("Escoge un emblema")
+            Text(stringResource(R.string.detail_choose_emblem))
             Spacer(Modifier.height(8.dp))
         }
 
-        items(listOf(0,1)) { _ ->
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        items(listOf(0, 1)) { _ ->
+            Row(
+                Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
                 repeat(4) {
                     Box(
                         modifier = Modifier
@@ -85,7 +93,7 @@ fun DetailScreen(
                             .background(Color.LightGray),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text("EMBLEM.")
+                        Text(stringResource(R.string.detail_emblem_placeholder))
                     }
                 }
             }
@@ -94,9 +102,12 @@ fun DetailScreen(
 
         item {
             Spacer(Modifier.height(12.dp))
-            Text("Colores")
+            Text(stringResource(R.string.detail_colors_label))
             Spacer(Modifier.height(8.dp))
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Row(
+                Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
                 Box(
                     modifier = Modifier
                         .weight(1f)
@@ -118,7 +129,9 @@ fun DetailScreen(
                     modifier = Modifier
                         .weight(1f)
                         .height(44.dp)
-                ) { Text("Cancelar") }
+                ) {
+                    Text(stringResource(R.string.action_cancel))
+                }
 
                 Spacer(Modifier.width(12.dp))
 
@@ -136,7 +149,9 @@ fun DetailScreen(
                     modifier = Modifier
                         .weight(1f)
                         .height(44.dp)
-                ) { Text("Guardar y volver") }
+                ) {
+                    Text(stringResource(R.string.action_save_and_back))
+                }
             }
         }
     }
