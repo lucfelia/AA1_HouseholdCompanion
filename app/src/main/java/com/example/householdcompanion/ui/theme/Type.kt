@@ -1,34 +1,53 @@
+@file:OptIn(ExperimentalTextApi::class)
+
 package com.example.householdcompanion.ui.theme
 
 import androidx.compose.material3.Typography
+import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.googlefonts.Font
+import androidx.compose.ui.text.googlefonts.GoogleFont
+import androidx.compose.ui.text.googlefonts.GoogleFont.Provider
 import androidx.compose.ui.unit.sp
+import com.example.householdcompanion.R
 
-// Set of Material typography styles to start with
-val Typography = Typography(
+private val googleFontProvider = Provider(
+        providerAuthority = "com.google.android.gms.fonts",
+        providerPackage = "com.google.android.gms",
+        certificates = R.array.com_google_android_gms_fonts_certs
+)
+
+@OptIn(ExperimentalTextApi::class)
+private val displayFontFamily = FontFamily(
+        Font(
+                googleFont = GoogleFont("UnifrakturCook"),
+                fontProvider = googleFontProvider,
+                weight = FontWeight.Normal
+        )
+)
+
+@OptIn(ExperimentalTextApi::class)
+private val bodyFontFamily = FontFamily(
+        Font(
+                googleFont = GoogleFont("Inria Serif"),
+                fontProvider = googleFontProvider,
+                weight = FontWeight.Normal
+        )
+)
+
+val AppTypography = Typography(
+        titleLarge = TextStyle(
+                fontFamily = displayFontFamily,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 22.sp,
+                lineHeight = 28.sp
+        ),
         bodyLarge = TextStyle(
-                fontFamily = FontFamily.Default,
+                fontFamily = bodyFontFamily,
                 fontWeight = FontWeight.Normal,
                 fontSize = 16.sp,
-                lineHeight = 24.sp,
-                letterSpacing = 0.5.sp
+                lineHeight = 24.sp
         )
-        /* Other default text styles to override
-    titleLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 22.sp,
-        lineHeight = 28.sp,
-        letterSpacing = 0.sp
-    ),
-    labelSmall = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium,
-        fontSize = 11.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
-    )
-    */
 )
