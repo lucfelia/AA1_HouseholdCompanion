@@ -11,9 +11,7 @@ import com.example.householdcompanion.data.House
 import com.example.householdcompanion.screens.*
 
 private enum class Screen {
-    Login, Home, Detail,
-    Attributes, Events,
-    Houses, Shared
+    Login, Home, Detail, Attributes, Events, Houses, Shared, HouseView
 }
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -24,9 +22,13 @@ fun AppRoot() {
     var currentUser by remember { mutableStateOf<String?>(null) }
     var houses by remember { mutableStateOf(FakeRepo.seed().toMutableList()) }
 
-    // 🔹 ESTADO TEMPORAL PARA CREACIÓN DE CASA
+
     var tempHouse by remember { mutableStateOf<House?>(null) }
     var tempStats by remember { mutableStateOf<Map<String, Int>>(emptyMap()) }
+    var tempRegion by remember { mutableStateOf("") }
+
+
+    var selectedHouseId by remember { mutableStateOf<String?>(null) }
 
     fun addHouse(h: House) {
         houses = (houses + h).toMutableList()
@@ -69,7 +71,8 @@ fun AppRoot() {
 
             Screen.Attributes -> HouseAttributesScreen(
                 onBack = { screen = Screen.Detail },
-                onNext = { _, stats ->
+                onNext = { region, stats ->
+                    tempRegion = region
                     tempStats = stats
                     screen = Screen.Events
                 }
@@ -84,25 +87,49 @@ fun AppRoot() {
                     if (base != null) {
                         addHouse(
                             base.copy(
+                                region = tempRegion,
                                 stats = finalStats
                             )
                         )
                     }
                     tempHouse = null
                     tempStats = emptyMap()
+                    tempRegion = ""
                     screen = Screen.Home
                 }
             )
 
+
             Screen.Houses -> HousesScreen(
                 houses = houses,
-                onBack = { screen = Screen.Home }
+                onBack = { screen = Screen.Home },
+                onOpenHouse = { h ->
+                    selectedHouseId = h.id
+                    screen = Screen.HouseView
+                }
             )
 
             Screen.Shared -> SharedHousesScreen(
                 houses = houses,
-                onBack = { screen = Screen.Home }
+                onBack = { screen = Screen.Home },
+                onOpenHouse = { h ->
+                    selectedHouseId = h.id
+                    screen = Screen.HouseView
+                }
             )
+
+
+            Screen.HouseView -> {
+                val house = houses.firstOrNull { it.id == selectedHouseId }
+                if (house == null) {
+                    screen = Screen.Home
+                } else {
+                    HouseViewScreen(
+                        house = house,
+                        onBack = { screen = Screen.Home }
+                    )
+                }
+            }
         }
     }
 }

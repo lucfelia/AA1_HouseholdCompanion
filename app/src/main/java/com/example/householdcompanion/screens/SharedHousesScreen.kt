@@ -6,13 +6,12 @@ import com.example.householdcompanion.data.House
 @Composable
 fun SharedHousesScreen(
     houses: List<House>,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onOpenHouse: (House) -> Unit
 ) {
-
     HousesScreen(
         houses = houses.filter { it.compartida },
-        onBack = onBack
+        onBack = onBack,
+        onOpenHouse = onOpenHouse
     )
 }
-
-

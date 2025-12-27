@@ -1,5 +1,6 @@
 package com.example.householdcompanion.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -14,7 +15,8 @@ import com.example.householdcompanion.data.House
 @Composable
 fun HousesScreen(
     houses: List<House>,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onOpenHouse: (House) -> Unit
 ) {
     val spaceL = dimensionResource(R.dimen.space_l)
     val spaceM = dimensionResource(R.dimen.space_m)
@@ -41,7 +43,10 @@ fun HousesScreen(
                 } else {
                     LazyColumn(verticalArrangement = Arrangement.spacedBy(spaceS)) {
                         items(houses, key = { it.id }) { h ->
-                            HouseItem(h)
+                            HouseItem(
+                                h = h,
+                                onClick = { onOpenHouse(h) }
+                            )
                         }
                     }
                 }
@@ -53,12 +58,22 @@ fun HousesScreen(
 }
 
 @Composable
-private fun HouseItem(h: House) {
+private fun HouseItem(
+    h: House,
+    onClick: () -> Unit
+) {
     val spaceM = dimensionResource(R.dimen.space_m)
-    Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)) {
+    val spaceS = dimensionResource(R.dimen.space_s)
+
+    Card(
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
+    ) {
         Column(Modifier.fillMaxWidth().padding(spaceM)) {
             Text(h.nombre, style = MaterialTheme.typography.titleMedium)
-            Spacer(Modifier.height(dimensionResource(R.dimen.space_s)))
+            Spacer(Modifier.height(spaceS))
             Text(h.lema, style = MaterialTheme.typography.bodyMedium)
         }
     }
