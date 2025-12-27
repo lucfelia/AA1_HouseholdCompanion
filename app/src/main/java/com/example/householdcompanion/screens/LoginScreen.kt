@@ -1,108 +1,91 @@
 package com.example.householdcompanion.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import com.example.householdcompanion.R
+import com.example.householdcompanion.screens.PrimaryButton
+import com.example.householdcompanion.screens.SectionCard
+import androidx.compose.ui.platform.LocalContext
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
     onLogin: (String) -> Unit
 ) {
-    var user by remember { mutableStateOf("") }
-    var pass by remember { mutableStateOf("") }
+    val spaceL = dimensionResource(R.dimen.space_l)
+    val spaceM = dimensionResource(R.dimen.space_m)
+    val spaceS = dimensionResource(R.dimen.space_s)
+
+    var username by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
     var error by remember { mutableStateOf<String?>(null) }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        contentAlignment = Alignment.Center
-    ) {
+    val context = LocalContext.current
+
+    Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(spaceL),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            Box(
-                modifier = Modifier
-                    .size(80.dp)
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
-            )
-
-            Spacer(Modifier.height(12.dp))
             Text(
-                stringResource(R.string.login_title),
-                style = MaterialTheme.typography.titleLarge,
-                textAlign = TextAlign.Center
+                text = stringResource(R.string.app_title),
+                style = MaterialTheme.typography.titleLarge
             )
+            Spacer(Modifier.height(spaceS))
             Text(
-                stringResource(R.string.login_subtitle),
-                textAlign = TextAlign.Center
+                text = stringResource(R.string.login_subtitle),
+                style = MaterialTheme.typography.bodyMedium
             )
 
-            Spacer(Modifier.height(20.dp))
+            Spacer(Modifier.height(spaceL))
 
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
-                    .padding(16.dp)
-            ) {
-                Column {
-                    Text(stringResource(R.string.login_welcome_1))
+            SectionCard(titleRes = R.string.login_welcome) {
+                OutlinedTextField(
+                    value = username,
+                    onValueChange = { username = it; error = null },
+                    label = { Text(stringResource(R.string.login_user)) },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(Modifier.height(spaceS))
+                OutlinedTextField(
+                    value = password,
+                    onValueChange = { password = it; error = null },
+                    label = { Text(stringResource(R.string.login_pass)) },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                if (error != null) {
+                    Spacer(Modifier.height(spaceS))
                     Text(
-                        stringResource(R.string.login_welcome_2),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        text = error!!,
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodyMedium
                     )
-
-                    Spacer(Modifier.height(12.dp))
-                    Text(stringResource(R.string.login_user_label))
-                    TextField(
-                        value = user,
-                        onValueChange = { user = it },
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true
-                    )
-
-                    Spacer(Modifier.height(12.dp))
-                    Text(stringResource(R.string.login_pass_label))
-                    TextField(
-                        value = pass,
-                        onValueChange = { pass = it },
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true,
-                        visualTransformation = PasswordVisualTransformation()
-                    )
-
-                    if (error != null) {
-                        Spacer(Modifier.height(8.dp))
-                        Text(
-                            error!!,
-                            color = MaterialTheme.colorScheme.error
-                        )
-                    }
-
-                    Spacer(Modifier.height(12.dp))
-                    Button(
-                        onClick = {
-                            if (user.isBlank()) error = "Usuario requerido"
-                            else onLogin(user)
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(44.dp)
-                    ) {
-                        Text(stringResource(R.string.login_button_enter))
-                    }
                 }
+
+                Spacer(Modifier.height(spaceM))
+                PrimaryButton(
+                    textRes = R.string.login_enter,
+                    onClick = {
+                        if (username.isBlank()) {
+                            error = context.getString(R.string.error_required_user)
+                        } else {
+                            onLogin(username.trim())
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
         }
     }

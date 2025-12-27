@@ -1,150 +1,101 @@
 package com.example.householdcompanion.screens
 
-import androidx.compose.foundation.background
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import com.example.householdcompanion.R
 import com.example.householdcompanion.data.Stats
+import com.example.householdcompanion.screens.ActionTile
+import com.example.householdcompanion.screens.SectionCard
+import com.example.householdcompanion.screens.TopBar
 
 @Composable
 fun HomeScreen(
     username: String,
     stats: Stats,
     onCreateHouse: () -> Unit,
+    onViewHouses: () -> Unit,
+    onSharedHouses: () -> Unit,
     onLogout: () -> Unit
 ) {
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp, vertical = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        item {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(36.dp)
-                        .background(MaterialTheme.colorScheme.surfaceVariant)
-                )
-                Spacer(Modifier.weight(1f))
-                Text(
-                    text = stringResource(R.string.home_title),
-                    style = MaterialTheme.typography.titleLarge,
-                    textAlign = TextAlign.Center
-                )
-                Spacer(Modifier.weight(1f))
-                Box(
-                    modifier = Modifier
-                        .size(36.dp)
-                        .background(MaterialTheme.colorScheme.surfaceVariant)
-                )
-            }
-            Spacer(Modifier.height(8.dp))
+    val spaceL = dimensionResource(R.dimen.space_l)
+    val spaceM = dimensionResource(R.dimen.space_m)
+    val spaceS = dimensionResource(R.dimen.space_s)
 
-            Text(
-                text = stringResource(R.string.home_welcome, username),
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
-            )
+    var showStats by remember { mutableStateOf(true) }
 
-            Spacer(Modifier.height(16.dp))
-            Text(
-                text = stringResource(R.string.home_actions_title),
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(Modifier.height(8.dp))
-        }
-
-        val acciones = listOf(
-            "Crea una casa" to onCreateHouse,
-            "Consulta tus casas" to {},
-            "Casas compartidas" to {}
-        )
-
-        items(acciones) { (titulo, onClick) ->
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
-                    .padding(12.dp)
-            ) {
-                Column(
-                    Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = titulo,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Spacer(Modifier.height(8.dp))
-                    Button(
-                        onClick = onClick,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(44.dp)
-                    ) { Text(titulo) }
+    Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+        Column(Modifier.fillMaxSize()) {
+            TopBar(
+                title = if (username.isBlank()) stringResource(R.string.home_title) else username,
+                left = { Text("Castillos") },
+                right = {
+                    TextButton(onClick = onLogout) { Text(stringResource(R.string.logout)) }
                 }
-            }
-            Spacer(Modifier.height(10.dp))
-        }
-
-        item {
-            Spacer(Modifier.height(8.dp))
-            Text(
-                text = stringResource(R.string.home_stats_title),
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
             )
-            Spacer(Modifier.height(8.dp))
 
-            Box(
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
-                    .padding(16.dp)
+                    .fillMaxSize()
+                    .padding(horizontal = spaceL),
+                verticalArrangement = Arrangement.spacedBy(spaceM)
             ) {
-                Column(
-                    Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        stringResource(R.string.home_stats_current, stats.actuales),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        stringResource(R.string.home_stats_destroyed, stats.destruidas),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        stringResource(R.string.home_stats_friends, stats.deAmigos),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-            }
+                Spacer(Modifier.height(spaceS))
 
-            Spacer(Modifier.height(16.dp))
-            Button(
-                onClick = onLogout,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(44.dp)
-            ) { Text(stringResource(R.string.home_action_logout)) }
+                ActionTile(
+                    title = stringResource(R.string.home_action_create_house),
+                    onClick = onCreateHouse
+                )
+                ActionTile(
+                    title = stringResource(R.string.home_action_view_houses),
+                    onClick = onViewHouses
+                )
+                ActionTile(
+                    title = stringResource(R.string.home_action_shared_houses),
+                    onClick = onSharedHouses
+                )
+
+
+                SectionCard(
+                    titleRes = R.string.home_stats_title,
+                    modifier = Modifier.animateContentSize()
+                ) {
+                    TextButton(onClick = { showStats = !showStats }) {
+                        Text(if (showStats) stringResource(R.string.hide) else stringResource(R.string.show))
+                    }
+
+                    AnimatedVisibility(visible = showStats) {
+                        Column(verticalArrangement = Arrangement.spacedBy(spaceS)) {
+                            StatLine(
+                                label = stringResource(R.string.stats_current),
+                                value = stringResource(R.string.home_stats_current, stats.actuales))
+
+                            StatLine(
+                                label = stringResource(R.string.stats_destroyed),
+                                value = stringResource(R.string.home_stats_destroyed, stats.destruidas))
+                            StatLine(
+                                label = stringResource(R.string.stats_friends),
+                                value = stringResource(R.string.home_stats_friends, stats.deAmigos))
+
+                        }
+                    }
+                }
+
+                Spacer(Modifier.height(spaceM))
+            }
         }
+    }
+}
+
+@Composable
+private fun StatLine(label: String, value: String) {
+    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+        Text(label, style = MaterialTheme.typography.bodyLarge)
+        Text(value, style = MaterialTheme.typography.titleMedium)
     }
 }
