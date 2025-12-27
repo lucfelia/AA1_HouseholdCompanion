@@ -47,7 +47,7 @@ fun HomeScreen(
             Column(Modifier.fillMaxSize()) {
                 TopBar(
                     title = if (username.isBlank()) stringResource(R.string.home_title) else username,
-                    left = { Text("Castillos") },
+                    left = { Text(stringResource(R.string.castillos)) },
                     right = {
                         Button(
                             onClick = onLogout,

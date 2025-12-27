@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.example.householdcompanion.R
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.ui.res.stringResource
 
 @Composable
 fun HouseEventsScreen(
@@ -23,12 +24,12 @@ fun HouseEventsScreen(
     var stats by remember { mutableStateOf(baseStats) }
 
     val events = listOf(
-        "Calamidad" to -3,
-        "Traición" to -2,
-        "Infraestructura" to +2,
-        "Favor" to +1,
-        "Auge" to -1,
-        "Conquista" to +1
+        stringResource(R.string.calamidad) to -3,
+        stringResource(R.string.traici_n) to -2,
+        stringResource(R.string.infraestructura) to +2,
+        stringResource(R.string.favor) to +1,
+        stringResource(R.string.auge) to -1,
+        stringResource(R.string.conquista) to +1
     )
 
     fun applyEvent(modifier: Int) {
@@ -51,7 +52,7 @@ fun HouseEventsScreen(
             Column(Modifier.fillMaxSize()) {
 
                 TopBar(
-                    title = "Crea una casa",
+                    title = stringResource(R.string.crea_una_casa),
                     left = {
                         Button(
                             onClick = onBack,
@@ -60,9 +61,7 @@ fun HouseEventsScreen(
                                 contentColor = Color.White
                             ),
                             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
-                        ) {
-                            Text("Atrás", color = Color.White)
-                        }
+                        ) {Text(stringResource(R.string.atr_s), color = Color.White)}
                     }
                 )
 
@@ -88,7 +87,7 @@ fun HouseEventsScreen(
                         ) {
 
                             Text(
-                                text = "3. Sucesos históricos",
+                                text = stringResource(R.string._3_sucesos_hist_ricos),
                                 style = MaterialTheme.typography.titleMedium,
                                 color = Color.White
                             )
@@ -112,7 +111,7 @@ fun HouseEventsScreen(
                             Spacer(Modifier.height(8.dp))
 
                             Text(
-                                "Estado actual:",
+                                stringResource(R.string.estado_actual),
                                 style = MaterialTheme.typography.titleSmall,
                                 color = Color.White
                             )
@@ -144,9 +143,7 @@ fun HouseEventsScreen(
                                         containerColor = Color.Black.copy(alpha = 0.60f),
                                         contentColor = Color.White
                                     )
-                                ) {
-                                    Text("Atrás", color = Color.White)
-                                }
+                                ) {Text(stringResource(R.string.atr_s), color = Color.White)}
 
                                 Button(
                                     onClick = { onSave(stats) },
@@ -155,7 +152,7 @@ fun HouseEventsScreen(
                                         contentColor = Color.White
                                     )
                                 ) {
-                                    Text("Guardar", color = Color.White)
+                                    Text(stringResource(R.string.guardar), color = Color.White)
                                 }
                             }
                         }

@@ -74,7 +74,7 @@ fun HousesScreen(
                             verticalArrangement = Arrangement.spacedBy(spaceS)
                         ) {
                             if (houses.isEmpty()) {
-                                Text("No hay casas todavía.", color = Color.White)
+                                Text(stringResource(R.string.no_hay_casas_todav_a), color = Color.White)
                             } else {
                                 LazyColumn(verticalArrangement = Arrangement.spacedBy(spaceS)) {
                                     items(houses, key = { it.id }) { h ->

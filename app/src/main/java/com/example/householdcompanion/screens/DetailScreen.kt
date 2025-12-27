@@ -63,7 +63,7 @@ fun DetailScreen(
                             ),
                             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
                         ) {
-                            Text("ATRÁS", color = Color.White)
+                            Text(stringResource(R.string.atr_s), color = Color.White)
                         }
                     },
                     right = {  }
@@ -182,7 +182,7 @@ fun DetailScreen(
                                         contentColor = Color.White
                                     )
                                 ) {
-                                    Text("Siguiente", color = Color.White)
+                                    Text(stringResource(R.string.siguiente), color = Color.White)
                                 }
                             }
                         }

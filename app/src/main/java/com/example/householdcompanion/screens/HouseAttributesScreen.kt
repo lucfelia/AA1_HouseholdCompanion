@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.householdcompanion.R
 
@@ -18,13 +19,16 @@ fun HouseAttributesScreen(
     onNext: (String, Map<String, Int>) -> Unit,
     onBack: () -> Unit
 ) {
-    val regions = listOf("Tierras de los ríos", "Norte", "Occidente", "Dominio", "Dorne")
+    val regions = listOf(stringResource(R.string.tierras_de_los_r_os), stringResource(R.string.norte), stringResource(
+            R.string.occidente), stringResource(R.string.dominio), stringResource(R.string.dorne)
+                )
     var selectedRegion by remember { mutableStateOf(regions.first()) }
     var expanded by remember { mutableStateOf(false) }
 
     val statNames = listOf(
-        "Tierras", "Defensa", "Influencia",
-        "Prestigio", "Milicia", "Economía", "Lealtad"
+        stringResource(R.string.tierras), stringResource(R.string.defensa), stringResource(R.string.influencia),
+        stringResource(R.string.prestigio), stringResource(R.string.milicia), stringResource(R.string.econom_a), stringResource(
+                    R.string.lealtad)
     )
 
     var stats by remember { mutableStateOf<Map<String, Int>>(emptyMap()) }
@@ -48,7 +52,7 @@ fun HouseAttributesScreen(
             Column(Modifier.fillMaxSize()) {
 
                 TopBar(
-                    title = "Crea una casa",
+                    title = stringResource(R.string.crea_una_casa),
                     left = {
                         Button(
                             onClick = onBack,
@@ -57,7 +61,7 @@ fun HouseAttributesScreen(
                                 contentColor = Color.White
                             ),
                             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
-                        ) { Text("Atrás") }
+                        ) {Text(stringResource(R.string.atr_s), color = Color.White)}
                     }
                 )
 
@@ -80,7 +84,7 @@ fun HouseAttributesScreen(
                                 .padding(16.dp),
                             verticalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
-                            Text("2. Atributos iniciales", style = MaterialTheme.typography.titleMedium, color = Color.White)
+                            Text(stringResource(R.string._2_atributos_iniciales), style = MaterialTheme.typography.titleMedium, color = Color.White)
 
                             ExposedDropdownMenuBox(
                                 expanded = expanded,
@@ -90,7 +94,7 @@ fun HouseAttributesScreen(
                                     value = selectedRegion,
                                     onValueChange = {},
                                     readOnly = true,
-                                    label = { Text("Región") },
+                                    label = { Text(stringResource(R.string.regi_n)) },
                                     modifier = Modifier
                                         .menuAnchor()
                                         .fillMaxWidth()
@@ -138,7 +142,7 @@ fun HouseAttributesScreen(
                                     contentColor = Color.White
                                 )
                             ) {
-                                Text("Roll 🎲")
+                                Text(stringResource(R.string.roll))
                             }
 
                             Row(
@@ -151,7 +155,7 @@ fun HouseAttributesScreen(
                                         containerColor = Color.Black.copy(alpha = 0.60f),
                                         contentColor = Color.White
                                     )
-                                ) { Text("Atrás") }
+                                )  {Text(stringResource(R.string.atr_s), color = Color.White)}
 
                                 Button(
                                     enabled = stats.isNotEmpty(),
@@ -162,7 +166,9 @@ fun HouseAttributesScreen(
                                         disabledContainerColor = Color.Black.copy(alpha = 0.35f),
                                         disabledContentColor = Color.White.copy(alpha = 0.50f)
                                     )
-                                ) { Text("Siguiente") }
+                                ) {
+                                    Text(stringResource(R.string.siguiente), color = Color.White)
+                                }
                             }
                         }
                     }

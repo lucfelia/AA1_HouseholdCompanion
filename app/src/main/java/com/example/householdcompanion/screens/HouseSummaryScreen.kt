@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.householdcompanion.R
 
@@ -32,7 +33,7 @@ fun HouseSummaryScreen(
             Column(Modifier.fillMaxSize()) {
 
                 TopBar(
-                    title = "Crea una casa",
+                    title = stringResource(R.string.home_action_create_house),
                     left = {
                         Button(
                             onClick = onBack,
@@ -41,7 +42,7 @@ fun HouseSummaryScreen(
                                 contentColor = Color.White
                             ),
                             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
-                        ) { Text("Atrás") }
+                        ) {Text(stringResource(R.string.atr_s), color = Color.White)}
                     }
                 )
 
@@ -65,7 +66,7 @@ fun HouseSummaryScreen(
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             Text(
-                                "Resumen de la casa",
+                                stringResource(R.string.resumen_de_la_casa),
                                 style = MaterialTheme.typography.titleMedium,
                                 color = Color.White
                             )
@@ -103,7 +104,7 @@ fun HouseSummaryScreen(
                                         containerColor = Color.Black.copy(alpha = 0.60f),
                                         contentColor = Color.White
                                     )
-                                ) { Text("Atrás") }
+                                ) {Text(stringResource(R.string.atr_s), color = Color.White)}
 
                                 Button(
                                     onClick = onConfirm,
@@ -111,7 +112,7 @@ fun HouseSummaryScreen(
                                         containerColor = Color.Black.copy(alpha = 0.75f),
                                         contentColor = Color.White
                                     )
-                                ) { Text("Confirmar") }
+                                ) { Text(stringResource(R.string.confirmar)) }
                             }
                         }
                     }
