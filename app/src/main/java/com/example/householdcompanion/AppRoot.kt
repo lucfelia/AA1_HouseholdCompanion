@@ -8,12 +8,13 @@ import androidx.compose.animation.with
 import androidx.compose.runtime.*
 import com.example.householdcompanion.data.FakeRepo
 import com.example.householdcompanion.data.House
-import com.example.householdcompanion.data.Stats
 import com.example.householdcompanion.screens.DetailScreen
 import com.example.householdcompanion.screens.HomeScreen
 import com.example.householdcompanion.screens.LoginScreen
+import com.example.householdcompanion.screens.HousesScreen
+import com.example.householdcompanion.screens.SharedHousesScreen
 
-private enum class Screen { Login, Home, Detail }
+private enum class Screen { Login, Home, Detail, Houses, Shared }
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -43,8 +44,8 @@ fun AppRoot() {
                 username = currentUser ?: "Invitado",
                 stats = FakeRepo.getStats(houses),
                 onCreateHouse = { screen = Screen.Detail },
-                onViewHouses = {  },
-                onSharedHouses = {  },
+                onViewHouses = { screen = Screen.Houses },
+                onSharedHouses = { screen = Screen.Shared },
                 onLogout = {
                     currentUser = null
                     screen = Screen.Login
@@ -58,7 +59,16 @@ fun AppRoot() {
                 },
                 onCancel = { screen = Screen.Home }
             )
+
+            Screen.Houses -> HousesScreen(
+                houses = houses,
+                onBack = { screen = Screen.Home }
+            )
+
+            Screen.Shared -> SharedHousesScreen(
+                houses = houses,
+                onBack = { screen = Screen.Home }
+            )
         }
     }
 }
-
