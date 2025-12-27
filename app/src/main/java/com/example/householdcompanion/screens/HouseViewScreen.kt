@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -19,7 +20,6 @@ fun HouseViewScreen(
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
 
-
         Image(
             painter = painterResource(R.drawable.background),
             contentDescription = null,
@@ -27,36 +27,75 @@ fun HouseViewScreen(
             contentScale = ContentScale.Crop
         )
 
-
         Surface(modifier = Modifier.fillMaxSize(), color = Color.Transparent) {
-            Column(Modifier.fillMaxSize().padding(16.dp)) {
+            Column(Modifier.fillMaxSize()) {
 
                 TopBar(
                     title = house.nombre,
-                    left = { TextButton(onClick = onBack) { Text("Volver") } }
+                    left = {
+                        Button(
+                            onClick = onBack,
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.Black.copy(alpha = 0.60f),
+                                contentColor = Color.White
+                            ),
+                            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
+                        ) { Text("Volver") }
+                    }
                 )
 
-                Spacer(Modifier.height(16.dp))
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
 
-                Text(house.lema, style = MaterialTheme.typography.bodyLarge)
-                Spacer(Modifier.height(8.dp))
-                Text("Emblema: ${house.emblema}")
-                Spacer(Modifier.height(8.dp))
-                Text("Región: ${house.region}")
-
-                Spacer(Modifier.height(16.dp))
-                Text("Atributos", style = MaterialTheme.typography.titleMedium)
-                Spacer(Modifier.height(8.dp))
-
-                house.stats.forEach { (k, v) ->
-                    Row(
-                        Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = CardDefaults.cardColors(
+                            containerColor = Color.Black.copy(alpha = 0.55f)
+                        )
                     ) {
-                        Text(k)
-                        Text(v.toString())
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Text(house.lema, style = MaterialTheme.typography.bodyLarge, color = Color.White)
+
+                            Text("Emblema: ${house.emblema}", color = Color.White)
+                            Text("Región: ${house.region}", color = Color.White)
+
+                            Spacer(Modifier.height(8.dp))
+
+                            Text("Atributos", style = MaterialTheme.typography.titleMedium, color = Color.White)
+
+                            Card(
+                                colors = CardDefaults.cardColors(
+                                    containerColor = Color.Black.copy(alpha = 0.35f)
+                                ),
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Column(
+                                    modifier = Modifier.padding(12.dp),
+                                    verticalArrangement = Arrangement.spacedBy(6.dp)
+                                ) {
+                                    house.stats.forEach { (k, v) ->
+                                        Row(
+                                            Modifier.fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.SpaceBetween,
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Text(k, color = Color.White)
+                                            Text(v.toString(), color = Color.White)
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
-                    Spacer(Modifier.height(6.dp))
                 }
             }
         }

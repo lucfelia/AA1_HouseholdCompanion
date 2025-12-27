@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import com.example.householdcompanion.R
 import com.example.householdcompanion.data.Stats
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun HomeScreen(
@@ -32,14 +33,12 @@ fun HomeScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
 
-
         Image(
             painter = painterResource(R.drawable.background),
             contentDescription = null,
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
-
 
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -50,7 +49,16 @@ fun HomeScreen(
                     title = if (username.isBlank()) stringResource(R.string.home_title) else username,
                     left = { Text("Castillos") },
                     right = {
-                        TextButton(onClick = onLogout) { Text(stringResource(R.string.logout)) }
+                        Button(
+                            onClick = onLogout,
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.Black.copy(alpha = 0.60f),
+                                contentColor = Color.White
+                            ),
+                            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
+                        ) {
+                            Text(stringResource(R.string.logout))
+                        }
                     }
                 )
 
@@ -62,43 +70,56 @@ fun HomeScreen(
                 ) {
                     Spacer(Modifier.height(spaceS))
 
-                    ActionTile(
-                        title = stringResource(R.string.home_action_create_house),
-                        onClick = onCreateHouse
-                    )
-                    ActionTile(
-                        title = stringResource(R.string.home_action_view_houses),
-                        onClick = onViewHouses
-                    )
-                    ActionTile(
-                        title = stringResource(R.string.home_action_shared_houses),
-                        onClick = onSharedHouses
-                    )
-
-                    SectionCard(
-                        titleRes = R.string.home_stats_title,
-                        modifier = Modifier.animateContentSize()
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = CardDefaults.cardColors(
+                            containerColor = Color.Black.copy(alpha = 0.55f)
+                        )
                     ) {
-                        TextButton(onClick = { showStats = !showStats }) {
-                            Text(if (showStats) stringResource(R.string.hide) else stringResource(R.string.show))
-                        }
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(spaceM),
+                            verticalArrangement = Arrangement.spacedBy(spaceM)
+                        ) {
 
-                        AnimatedVisibility(visible = showStats) {
-                            Column(verticalArrangement = Arrangement.spacedBy(spaceS)) {
-                                StatLine(
-                                    label = stringResource(R.string.stats_current),
-                                    value = stringResource(R.string.home_stats_current, stats.actuales)
-                                )
+                            ActionTile(
+                                title = stringResource(R.string.home_action_create_house),
+                                onClick = onCreateHouse
+                            )
+                            ActionTile(
+                                title = stringResource(R.string.home_action_view_houses),
+                                onClick = onViewHouses
+                            )
+                            ActionTile(
+                                title = stringResource(R.string.home_action_shared_houses),
+                                onClick = onSharedHouses
+                            )
 
-                                StatLine(
-                                    label = stringResource(R.string.stats_destroyed),
-                                    value = stringResource(R.string.home_stats_destroyed, stats.destruidas)
-                                )
+                            SectionCard(
+                                titleRes = R.string.home_stats_title,
+                                modifier = Modifier.animateContentSize()
+                            ) {
+                                TextButton(onClick = { showStats = !showStats }) {
+                                    Text(if (showStats) stringResource(R.string.hide) else stringResource(R.string.show))
+                                }
 
-                                StatLine(
-                                    label = stringResource(R.string.stats_friends),
-                                    value = stringResource(R.string.home_stats_friends, stats.deAmigos)
-                                )
+                                AnimatedVisibility(visible = showStats) {
+                                    Column(verticalArrangement = Arrangement.spacedBy(spaceS)) {
+                                        StatLine(
+                                            label = stringResource(R.string.stats_current),
+                                            value = stringResource(R.string.home_stats_current, stats.actuales)
+                                        )
+                                        StatLine(
+                                            label = stringResource(R.string.stats_destroyed),
+                                            value = stringResource(R.string.home_stats_destroyed, stats.destruidas)
+                                        )
+                                        StatLine(
+                                            label = stringResource(R.string.stats_friends),
+                                            value = stringResource(R.string.home_stats_friends, stats.deAmigos)
+                                        )
+                                    }
+                                }
                             }
                         }
                     }

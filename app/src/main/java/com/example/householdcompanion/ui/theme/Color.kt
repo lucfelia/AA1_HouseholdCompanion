@@ -5,11 +5,11 @@ import androidx.compose.ui.graphics.Color
 val Ink = Color(0xFF060A12)
 val Ink2 = Color(0xFF0B1222)
 
-val Navy = Color(0xFF0E1B3D)
-val Navy2 = Color(0xFF162C5C)
+val Navy = Color(0xFF18254D)
+val Navy2 = Color(0xFF18254D)
 
-val Stone = Color(0xFF101827)
-val Stone2 = Color(0xFF1A2233)
+val Stone = Color(0xFF000000)
+val Stone2 = Color(0xFF000000)
 
 val Paper = Color(0xFFECEFF6)
 val Paper2 = Color(0xFFC8D0E3)

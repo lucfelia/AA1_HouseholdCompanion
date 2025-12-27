@@ -13,6 +13,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.example.householdcompanion.R
 import com.example.householdcompanion.data.House
 
@@ -28,7 +29,6 @@ fun HousesScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
 
-
         Image(
             painter = painterResource(R.drawable.background),
             contentDescription = null,
@@ -36,13 +36,21 @@ fun HousesScreen(
             contentScale = ContentScale.Crop
         )
 
-
         Surface(modifier = Modifier.fillMaxSize(), color = Color.Transparent) {
             Column(Modifier.fillMaxSize()) {
 
                 TopBar(
                     title = stringResource(R.string.home_action_view_houses),
-                    left = { TextButton(onClick = onBack) { Text(stringResource(R.string.back)) } }
+                    left = {
+                        Button(
+                            onClick = onBack,
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.Black.copy(alpha = 0.60f),
+                                contentColor = Color.White
+                            ),
+                            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
+                        ) { Text(stringResource(R.string.back)) }
+                    }
                 )
 
                 Column(
@@ -53,15 +61,29 @@ fun HousesScreen(
                 ) {
                     Spacer(Modifier.height(spaceS))
 
-                    if (houses.isEmpty()) {
-                        Text("No hay casas todavía.")
-                    } else {
-                        LazyColumn(verticalArrangement = Arrangement.spacedBy(spaceS)) {
-                            items(houses, key = { it.id }) { h ->
-                                HouseItem(
-                                    h = h,
-                                    onClick = { onOpenHouse(h) }
-                                )
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = CardDefaults.cardColors(
+                            containerColor = Color.Black.copy(alpha = 0.55f)
+                        )
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(spaceM),
+                            verticalArrangement = Arrangement.spacedBy(spaceS)
+                        ) {
+                            if (houses.isEmpty()) {
+                                Text("No hay casas todavía.", color = Color.White)
+                            } else {
+                                LazyColumn(verticalArrangement = Arrangement.spacedBy(spaceS)) {
+                                    items(houses, key = { it.id }) { h ->
+                                        HouseItem(
+                                            h = h,
+                                            onClick = { onOpenHouse(h) }
+                                        )
+                                    }
+                                }
                             }
                         }
                     }

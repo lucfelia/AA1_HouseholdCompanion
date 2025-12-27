@@ -6,6 +6,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
@@ -13,7 +14,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.householdcompanion.R
-import androidx.compose.ui.graphics.Color
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,12 +44,12 @@ fun LoginScreen(
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = Color.Transparent
-
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(spaceL),
+                    .padding(spaceL)
+                    .padding(bottom = 160.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
@@ -104,19 +104,19 @@ fun LoginScreen(
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
-
-                Spacer(Modifier.weight(1f))
-
-
-                Image(
-                    painter = painterResource(R.drawable.dragon),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(140.dp),
-                    contentScale = ContentScale.Fit
-                )
             }
         }
+
+
+        Image(
+            painter = painterResource(R.drawable.dragon),
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(360.dp)
+                .align(Alignment.BottomCenter)
+                .offset(y = 85.dp),
+            contentScale = ContentScale.Fit
+        )
     }
 }

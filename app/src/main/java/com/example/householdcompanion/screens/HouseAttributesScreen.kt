@@ -4,7 +4,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -35,7 +37,6 @@ fun HouseAttributesScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
 
-
         Image(
             painter = painterResource(R.drawable.background),
             contentDescription = null,
@@ -43,65 +44,127 @@ fun HouseAttributesScreen(
             contentScale = ContentScale.Crop
         )
 
+        Surface(modifier = Modifier.fillMaxSize(), color = Color.Transparent) {
+            Column(Modifier.fillMaxSize()) {
 
-        Surface(modifier = Modifier.fillMaxSize(), color = androidx.compose.ui.graphics.Color.Transparent) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text("2. Atributos iniciales", style = MaterialTheme.typography.titleMedium)
+                TopBar(
+                    title = "Crea una casa",
+                    left = {
+                        Button(
+                            onClick = onBack,
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.Black.copy(alpha = 0.60f),
+                                contentColor = Color.White
+                            ),
+                            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
+                        ) { Text("Atrás") }
+                    }
+                )
 
-                Spacer(Modifier.height(16.dp))
-
-
-                ExposedDropdownMenuBox(
-                    expanded = expanded,
-                    onExpandedChange = { expanded = !expanded }
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    TextField(
-                        value = selectedRegion,
-                        onValueChange = {},
-                        readOnly = true,
-                        label = { Text("Región") },
-                        modifier = Modifier.menuAnchor()
-                    )
-                    ExposedDropdownMenu(
-                        expanded = expanded,
-                        onDismissRequest = { expanded = false }
+
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = CardDefaults.cardColors(
+                            containerColor = Color.Black.copy(alpha = 0.55f)
+                        )
                     ) {
-                        regions.forEach { region ->
-                            DropdownMenuItem(
-                                text = { Text(region) },
-                                onClick = {
-                                    selectedRegion = region
-                                    expanded = false
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            Text("2. Atributos iniciales", style = MaterialTheme.typography.titleMedium, color = Color.White)
+
+                            ExposedDropdownMenuBox(
+                                expanded = expanded,
+                                onExpandedChange = { expanded = !expanded }
+                            ) {
+                                TextField(
+                                    value = selectedRegion,
+                                    onValueChange = {},
+                                    readOnly = true,
+                                    label = { Text("Región") },
+                                    modifier = Modifier
+                                        .menuAnchor()
+                                        .fillMaxWidth()
+                                )
+                                ExposedDropdownMenu(
+                                    expanded = expanded,
+                                    onDismissRequest = { expanded = false }
+                                ) {
+                                    regions.forEach { region ->
+                                        DropdownMenuItem(
+                                            text = { Text(region) },
+                                            onClick = {
+                                                selectedRegion = region
+                                                expanded = false
+                                            }
+                                        )
+                                    }
                                 }
-                            )
+                            }
+
+                            Card(
+                                colors = CardDefaults.cardColors(
+                                    containerColor = Color.Black.copy(alpha = 0.35f)
+                                ),
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Column(
+                                    modifier = Modifier.padding(12.dp),
+                                    verticalArrangement = Arrangement.spacedBy(6.dp)
+                                ) {
+                                    statNames.forEach {
+                                        Text(
+                                            text = "$it: ${stats[it] ?: "-"}",
+                                            color = Color.White
+                                        )
+                                    }
+                                }
+                            }
+
+                            Button(
+                                onClick = { rollStats() },
+                                modifier = Modifier.align(Alignment.End),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color.Black.copy(alpha = 0.65f),
+                                    contentColor = Color.White
+                                )
+                            ) {
+                                Text("Roll 🎲")
+                            }
+
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Button(
+                                    onClick = onBack,
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = Color.Black.copy(alpha = 0.60f),
+                                        contentColor = Color.White
+                                    )
+                                ) { Text("Atrás") }
+
+                                Button(
+                                    enabled = stats.isNotEmpty(),
+                                    onClick = { onNext(selectedRegion, stats) },
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = Color.Black.copy(alpha = 0.75f),
+                                        contentColor = Color.White,
+                                        disabledContainerColor = Color.Black.copy(alpha = 0.35f),
+                                        disabledContentColor = Color.White.copy(alpha = 0.50f)
+                                    )
+                                ) { Text("Siguiente") }
+                            }
                         }
-                    }
-                }
-
-                Spacer(Modifier.height(16.dp))
-
-                statNames.forEach {
-                    Text("$it: ${stats[it] ?: "-"}")
-                }
-
-                Spacer(Modifier.height(16.dp))
-
-                Button(onClick = { rollStats() }) {
-                    Text("Roll 🎲")
-                }
-
-                Spacer(Modifier.height(16.dp))
-
-                Row {
-                    Button(onClick = onBack) {
-                        Text("Atrás")
-                    }
-                    Spacer(Modifier.width(8.dp))
-                    Button(
-                        enabled = stats.isNotEmpty(),
-                        onClick = { onNext(selectedRegion, stats) }
-                    ) {
-                        Text("Siguiente")
                     }
                 }
             }
