@@ -16,3 +16,9 @@ data class Stats(
     val destruidas: Int,
     val deAmigos: Int
 )
+
+data class UserProfile(
+    val username: String,
+    val titulo: String,
+    val nivel: Int
+)

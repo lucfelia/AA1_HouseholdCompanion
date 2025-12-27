@@ -1,15 +1,16 @@
 package com.example.householdcompanion.screens
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import com.example.householdcompanion.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -20,11 +21,12 @@ fun LoginScreen(
     var user by remember { mutableStateOf("") }
     var pass by remember { mutableStateOf("") }
     var error by remember { mutableStateOf<String?>(null) }
+    val padding = dimensionResource(id = R.dimen.screen_padding)
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(24.dp),
+            .padding(padding),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -33,11 +35,11 @@ fun LoginScreen(
         ) {
             Box(
                 modifier = Modifier
-                    .size(80.dp)
+                    .size(dimensionResource(id = R.dimen.logo_size))
                     .background(MaterialTheme.colorScheme.surfaceVariant)
             )
 
-            Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(dimensionResource(id = R.dimen.spacing_medium)))
             Text(
                 stringResource(R.string.login_title),
                 style = MaterialTheme.typography.titleLarge,
@@ -48,13 +50,13 @@ fun LoginScreen(
                 textAlign = TextAlign.Center
             )
 
-            Spacer(Modifier.height(20.dp))
+            Spacer(Modifier.height(dimensionResource(id = R.dimen.spacing_large)))
 
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
-                    .padding(16.dp)
+                    .background(MaterialTheme.colorScheme.surfaceVariant, shape = MaterialTheme.shapes.medium)
+                    .padding(dimensionResource(id = R.dimen.spacing_large))
             ) {
                 Column {
                     Text(stringResource(R.string.login_welcome_1))
@@ -63,7 +65,7 @@ fun LoginScreen(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
 
-                    Spacer(Modifier.height(12.dp))
+                    Spacer(Modifier.height(dimensionResource(id = R.dimen.spacing_medium)))
                     Text(stringResource(R.string.login_user_label))
                     TextField(
                         value = user,
@@ -72,7 +74,7 @@ fun LoginScreen(
                         singleLine = true
                     )
 
-                    Spacer(Modifier.height(12.dp))
+                    Spacer(Modifier.height(dimensionResource(id = R.dimen.spacing_medium)))
                     Text(stringResource(R.string.login_pass_label))
                     TextField(
                         value = pass,
@@ -82,23 +84,25 @@ fun LoginScreen(
                         visualTransformation = PasswordVisualTransformation()
                     )
 
-                    if (error != null) {
-                        Spacer(Modifier.height(8.dp))
-                        Text(
-                            error!!,
-                            color = MaterialTheme.colorScheme.error
-                        )
+                    AnimatedVisibility(visible = error != null) {
+                        Column {
+                            Spacer(Modifier.height(dimensionResource(id = R.dimen.spacing_small)))
+                            Text(
+                                error.orEmpty(),
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        }
                     }
 
-                    Spacer(Modifier.height(12.dp))
+                    Spacer(Modifier.height(dimensionResource(id = R.dimen.spacing_medium)))
                     Button(
                         onClick = {
-                            if (user.isBlank()) error = "Usuario requerido"
+                            if (user.isBlank()) error = stringResource(R.string.login_error_required)
                             else onLogin(user)
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(44.dp)
+                            .height(dimensionResource(id = R.dimen.button_height))
                     ) {
                         Text(stringResource(R.string.login_button_enter))
                     }

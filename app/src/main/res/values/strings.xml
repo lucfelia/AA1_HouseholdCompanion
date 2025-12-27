@@ -7,6 +7,9 @@
     <string name="detail_name_label">Nombre</string>
     <string name="detail_motto_label">Lema</string>
     <string name="detail_emblem_label">Emblema</string>
+    <string name="detail_default_name">House Stark</string>
+    <string name="detail_default_motto">Winter Is Coming</string>
+    <string name="detail_default_emblem">Lobo huargo</string>
     <string name="detail_choose_emblem">Escoge un emblema</string>
     <string name="detail_emblem_placeholder">EMBLEM.</string>
     <string name="detail_colors_label">Colores</string>
@@ -14,9 +17,16 @@
     <string name="action_save_and_back">Guardar y volver</string>
 
     <string name="home_title">Household companion</string>
+    <string name="home_guest_user">Invitado</string>
     <string name="home_welcome">Bienvenido, %1$s</string>
     <string name="home_actions_title">Acciones</string>
+    <string name="home_action_create">Crea una casa</string>
+    <string name="home_action_view">Consulta tus casas</string>
+    <string name="home_action_shared">Casas compartidas</string>
     <string name="home_stats_title">Stats actuales</string>
+    <string name="home_stats_toggle_show">Mostrar stats</string>
+    <string name="home_stats_toggle_hide">Ocultar stats</string>
+    <string name="home_profile_header">%1$s • Nivel %2$d</string>
     <string name="home_stats_current">• Casas actuales: %1$d</string>
     <string name="home_stats_destroyed">• Casas destruidas: %1$d</string>
     <string name="home_stats_friends">• Casas de amigos: %1$d</string>
@@ -29,4 +39,5 @@
     <string name="login_user_label">Usuario</string>
     <string name="login_pass_label">Contraseña</string>
     <string name="login_button_enter">Entrar al compendio</string>
+    <string name="login_error_required">Usuario requerido</string>
 </resources>

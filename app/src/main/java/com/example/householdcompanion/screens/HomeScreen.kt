@@ -1,5 +1,7 @@
 package com.example.householdcompanion.screens
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,23 +10,29 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import com.example.householdcompanion.R
 import com.example.householdcompanion.data.Stats
+import com.example.householdcompanion.data.UserProfile
 
 @Composable
 fun HomeScreen(
     username: String,
     stats: Stats,
+    userProfile: UserProfile?,
     onCreateHouse: () -> Unit,
     onLogout: () -> Unit
 ) {
+    var showStats by remember { mutableStateOf(true) }
+    val spacing = dimensionResource(id = R.dimen.spacing_large)
+    val cardPadding = dimensionResource(id = R.dimen.spacing_medium)
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp, vertical = 16.dp),
+            .padding(horizontal = spacing, vertical = spacing),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
@@ -34,7 +42,7 @@ fun HomeScreen(
             ) {
                 Box(
                     modifier = Modifier
-                        .size(36.dp)
+                        .size(dimensionResource(id = R.dimen.avatar_size))
                         .background(MaterialTheme.colorScheme.surfaceVariant)
                 )
                 Spacer(Modifier.weight(1f))
@@ -46,11 +54,11 @@ fun HomeScreen(
                 Spacer(Modifier.weight(1f))
                 Box(
                     modifier = Modifier
-                        .size(36.dp)
+                        .size(dimensionResource(id = R.dimen.avatar_size))
                         .background(MaterialTheme.colorScheme.surfaceVariant)
                 )
             }
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(dimensionResource(id = R.dimen.spacing_small)))
 
             Text(
                 text = stringResource(R.string.home_welcome, username),
@@ -58,27 +66,28 @@ fun HomeScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(spacing))
             Text(
                 text = stringResource(R.string.home_actions_title),
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(dimensionResource(id = R.dimen.spacing_small)))
         }
 
         val acciones = listOf(
-            "Crea una casa" to onCreateHouse,
-            "Consulta tus casas" to {},
-            "Casas compartidas" to {}
+            stringResource(R.string.home_action_create) to onCreateHouse,
+            stringResource(R.string.home_action_view) to {},
+            stringResource(R.string.home_action_shared) to {}
         )
 
         items(acciones) { (titulo, onClick) ->
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
-                    .padding(12.dp)
+                    .background(MaterialTheme.colorScheme.surfaceVariant, shape = MaterialTheme.shapes.medium)
+                    .animateContentSize()
+                    .padding(cardPadding)
             ) {
                 Column(
                     Modifier.fillMaxWidth(),
@@ -89,61 +98,86 @@ fun HomeScreen(
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth()
                     )
-                    Spacer(Modifier.height(8.dp))
+                    Spacer(Modifier.height(dimensionResource(id = R.dimen.spacing_small)))
                     Button(
                         onClick = onClick,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(44.dp)
+                            .height(dimensionResource(id = R.dimen.button_height))
                     ) { Text(titulo) }
                 }
             }
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(dimensionResource(id = R.dimen.spacing_medium)))
         }
 
         item {
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(dimensionResource(id = R.dimen.spacing_small)))
             Text(
                 text = stringResource(R.string.home_stats_title),
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(dimensionResource(id = R.dimen.spacing_small)))
 
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
-                    .padding(16.dp)
+            Button(
+                onClick = { showStats = !showStats },
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Column(
-                    Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                Text(
+                    if (showStats) stringResource(R.string.home_stats_toggle_hide)
+                    else stringResource(R.string.home_stats_toggle_show)
+                )
+            }
+
+            AnimatedVisibility(visible = showStats) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.surfaceVariant, shape = MaterialTheme.shapes.medium)
+                        .padding(cardPadding)
                 ) {
-                    Text(
-                        stringResource(R.string.home_stats_current, stats.actuales),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        stringResource(R.string.home_stats_destroyed, stats.destruidas),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        stringResource(R.string.home_stats_friends, stats.deAmigos),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                    Column(
+                        Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        if (userProfile != null) {
+                            Text(
+                                stringResource(
+                                    R.string.home_profile_header,
+                                    userProfile.titulo,
+                                    userProfile.nivel
+                                ),
+                                style = MaterialTheme.typography.titleMedium,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            Spacer(Modifier.height(dimensionResource(id = R.dimen.spacing_small)))
+                        }
+                        Text(
+                            stringResource(R.string.home_stats_current, stats.actuales),
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        Text(
+                            stringResource(R.string.home_stats_destroyed, stats.destruidas),
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        Text(
+                            stringResource(R.string.home_stats_friends, stats.deAmigos),
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
                 }
             }
 
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(spacing))
             Button(
                 onClick = onLogout,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(44.dp)
+                    .height(dimensionResource(id = R.dimen.button_height))
             ) { Text(stringResource(R.string.home_action_logout)) }
         }
     }

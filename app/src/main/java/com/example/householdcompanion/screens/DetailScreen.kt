@@ -9,8 +9,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.example.householdcompanion.R
 import com.example.householdcompanion.data.House
 import com.example.householdcompanion.data.FakeRepo
@@ -21,31 +21,33 @@ fun DetailScreen(
     onSave: (House) -> Unit,
     onCancel: () -> Unit
 ) {
-    var nombre by remember { mutableStateOf("House Stark") }
-    var lema by remember { mutableStateOf("Winter Is Coming") }
-    var emblema by remember { mutableStateOf("Lobo huargo") }
+    var nombre by remember { mutableStateOf(stringResource(R.string.detail_default_name)) }
+    var lema by remember { mutableStateOf(stringResource(R.string.detail_default_motto)) }
+    var emblema by remember { mutableStateOf(stringResource(R.string.detail_default_emblem)) }
+    val spacing = dimensionResource(id = R.dimen.spacing_large)
+    val smallSpacing = dimensionResource(id = R.dimen.spacing_small)
 
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(spacing)
     ) {
         item {
             Text(
                 text = stringResource(R.string.detail_title),
                 style = MaterialTheme.typography.titleLarge
             )
-            Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(dimensionResource(id = R.dimen.spacing_medium)))
 
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
-                    .padding(16.dp)
+                    .background(MaterialTheme.colorScheme.surfaceVariant, shape = MaterialTheme.shapes.medium)
+                    .padding(spacing)
             ) {
                 Column {
                     Text(stringResource(R.string.detail_identity_section))
-                    Spacer(Modifier.height(8.dp))
+                    Spacer(Modifier.height(smallSpacing))
 
                     Text(stringResource(R.string.detail_name_label))
                     TextField(
@@ -55,7 +57,7 @@ fun DetailScreen(
                         singleLine = true
                     )
 
-                    Spacer(Modifier.height(12.dp))
+                    Spacer(Modifier.height(dimensionResource(id = R.dimen.spacing_medium)))
                     Text(stringResource(R.string.detail_motto_label))
                     TextField(
                         value = lema,
@@ -64,7 +66,7 @@ fun DetailScreen(
                         singleLine = true
                     )
 
-                    Spacer(Modifier.height(12.dp))
+                    Spacer(Modifier.height(dimensionResource(id = R.dimen.spacing_medium)))
                     Text(stringResource(R.string.detail_emblem_label))
                     TextField(
                         value = emblema,
@@ -75,21 +77,21 @@ fun DetailScreen(
                 }
             }
 
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(spacing))
             Text(stringResource(R.string.detail_choose_emblem))
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(smallSpacing))
         }
 
         items(listOf(0, 1)) { _ ->
             Row(
                 Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(smallSpacing)
             ) {
                 repeat(4) {
                     Box(
                         modifier = Modifier
                             .weight(1f)
-                            .height(60.dp)
+                            .height(dimensionResource(id = R.dimen.tile_height))
                             .background(Color.LightGray),
                         contentAlignment = Alignment.Center
                     ) {
@@ -97,43 +99,43 @@ fun DetailScreen(
                     }
                 }
             }
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(smallSpacing))
         }
 
         item {
-            Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(dimensionResource(id = R.dimen.spacing_medium)))
             Text(stringResource(R.string.detail_colors_label))
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(smallSpacing))
             Row(
                 Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(smallSpacing)
             ) {
                 Box(
                     modifier = Modifier
                         .weight(1f)
-                        .height(50.dp)
+                        .height(dimensionResource(id = R.dimen.color_swatch))
                         .background(Color(0xFFDDE1E6))
                 )
                 Box(
                     modifier = Modifier
                         .weight(1f)
-                        .height(50.dp)
+                        .height(dimensionResource(id = R.dimen.color_swatch))
                         .background(Color(0xFFB5BAC3))
                 )
             }
 
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(spacing))
             Row(Modifier.fillMaxWidth()) {
                 Button(
                     onClick = onCancel,
                     modifier = Modifier
                         .weight(1f)
-                        .height(44.dp)
+                        .height(dimensionResource(id = R.dimen.button_height))
                 ) {
                     Text(stringResource(R.string.action_cancel))
                 }
 
-                Spacer(Modifier.width(12.dp))
+                Spacer(Modifier.width(dimensionResource(id = R.dimen.spacing_medium)))
 
                 Button(
                     onClick = {
@@ -148,7 +150,7 @@ fun DetailScreen(
                     },
                     modifier = Modifier
                         .weight(1f)
-                        .height(44.dp)
+                        .height(dimensionResource(id = R.dimen.button_height))
                 ) {
                     Text(stringResource(R.string.action_save_and_back))
                 }

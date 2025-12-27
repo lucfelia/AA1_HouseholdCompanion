@@ -18,4 +18,10 @@ object FakeRepo {
         destruidas = list.count { it.destruida },
         deAmigos = list.count { it.compartida }
     )
+
+    fun loadUser(username: String) = UserProfile(
+        username = username,
+        titulo = "Guardia del Norte",
+        nivel = 7
+    )
 }
