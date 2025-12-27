@@ -1,5 +1,6 @@
 package com.example.householdcompanion.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -7,7 +8,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.householdcompanion.R
 import com.example.householdcompanion.data.House
@@ -22,36 +26,48 @@ fun HousesScreen(
     val spaceM = dimensionResource(R.dimen.space_m)
     val spaceS = dimensionResource(R.dimen.space_s)
 
-    Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-        Column(Modifier.fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxSize()) {
 
-            TopBar(
-                title = stringResource(R.string.home_action_view_houses),
-                left = { TextButton(onClick = onBack) { Text(stringResource(R.string.back)) } }
-            )
 
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = spaceL),
-                verticalArrangement = Arrangement.spacedBy(spaceM)
-            ) {
-                Spacer(Modifier.height(spaceS))
+        Image(
+            painter = painterResource(R.drawable.background),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
+        )
 
-                if (houses.isEmpty()) {
-                    Text("No hay casas todavía.")
-                } else {
-                    LazyColumn(verticalArrangement = Arrangement.spacedBy(spaceS)) {
-                        items(houses, key = { it.id }) { h ->
-                            HouseItem(
-                                h = h,
-                                onClick = { onOpenHouse(h) }
-                            )
+
+        Surface(modifier = Modifier.fillMaxSize(), color = Color.Transparent) {
+            Column(Modifier.fillMaxSize()) {
+
+                TopBar(
+                    title = stringResource(R.string.home_action_view_houses),
+                    left = { TextButton(onClick = onBack) { Text(stringResource(R.string.back)) } }
+                )
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = spaceL),
+                    verticalArrangement = Arrangement.spacedBy(spaceM)
+                ) {
+                    Spacer(Modifier.height(spaceS))
+
+                    if (houses.isEmpty()) {
+                        Text("No hay casas todavía.")
+                    } else {
+                        LazyColumn(verticalArrangement = Arrangement.spacedBy(spaceS)) {
+                            items(houses, key = { it.id }) { h ->
+                                HouseItem(
+                                    h = h,
+                                    onClick = { onOpenHouse(h) }
+                                )
+                            }
                         }
                     }
-                }
 
-                Spacer(Modifier.height(spaceM))
+                    Spacer(Modifier.height(spaceM))
+                }
             }
         }
     }
