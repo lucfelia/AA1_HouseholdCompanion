@@ -8,13 +8,13 @@ import androidx.compose.animation.with
 import androidx.compose.runtime.*
 import com.example.householdcompanion.data.FakeRepo
 import com.example.householdcompanion.data.House
-import com.example.householdcompanion.screens.DetailScreen
-import com.example.householdcompanion.screens.HomeScreen
-import com.example.householdcompanion.screens.LoginScreen
-import com.example.householdcompanion.screens.HousesScreen
-import com.example.householdcompanion.screens.SharedHousesScreen
+import com.example.householdcompanion.screens.*
 
-private enum class Screen { Login, Home, Detail, Houses, Shared }
+private enum class Screen {
+    Login, Home, Detail,
+    Attributes, Events,
+    Houses, Shared
+}
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -24,8 +24,12 @@ fun AppRoot() {
     var currentUser by remember { mutableStateOf<String?>(null) }
     var houses by remember { mutableStateOf(FakeRepo.seed().toMutableList()) }
 
+    // 🔹 ESTADO TEMPORAL PARA CREACIÓN DE CASA
+    var tempHouse by remember { mutableStateOf<House?>(null) }
+    var tempStats by remember { mutableStateOf<Map<String, Int>>(emptyMap()) }
+
     fun addHouse(h: House) {
-        houses = (houses + h.copy(id = FakeRepo.newId())).toMutableList()
+        houses = (houses + h).toMutableList()
     }
 
     AnimatedContent(
@@ -33,6 +37,7 @@ fun AppRoot() {
         transitionSpec = { fadeIn() with fadeOut() }
     ) { target ->
         when (target) {
+
             Screen.Login -> LoginScreen(
                 onLogin = { username ->
                     currentUser = username
@@ -52,12 +57,41 @@ fun AppRoot() {
                 }
             )
 
+
             Screen.Detail -> DetailScreen(
                 onSave = { house ->
-                    addHouse(house)
-                    screen = Screen.Home
+                    tempHouse = house
+                    screen = Screen.Attributes
                 },
                 onCancel = { screen = Screen.Home }
+            )
+
+
+            Screen.Attributes -> HouseAttributesScreen(
+                onBack = { screen = Screen.Detail },
+                onNext = { _, stats ->
+                    tempStats = stats
+                    screen = Screen.Events
+                }
+            )
+
+
+            Screen.Events -> HouseEventsScreen(
+                baseStats = tempStats,
+                onBack = { screen = Screen.Attributes },
+                onSave = { finalStats ->
+                    val base = tempHouse
+                    if (base != null) {
+                        addHouse(
+                            base.copy(
+                                stats = finalStats
+                            )
+                        )
+                    }
+                    tempHouse = null
+                    tempStats = emptyMap()
+                    screen = Screen.Home
+                }
             )
 
             Screen.Houses -> HousesScreen(

@@ -118,17 +118,20 @@ fun DetailScreen(
                                     id = FakeRepo.newId(),
                                     nombre = name.ifBlank { defaultNombre },
                                     lema = motto.ifBlank { defaultLema },
-                                    emblema = emblem
+                                    emblema = emblem,
+                                    region = "",
+                                    stats = emptyMap()
                                 )
                             )
                         }
                     ) {
                         Text(stringResource(R.string.action_save_and_back))
                     }
-                }
 
-                Spacer(Modifier.height(spaceM))
+
+                    Spacer(Modifier.height(spaceM))
             }
         }
     }
+}
 }
